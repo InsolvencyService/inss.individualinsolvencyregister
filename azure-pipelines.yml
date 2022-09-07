@@ -31,8 +31,8 @@ stages:
         inputs:
           command: 'restore'
           projects: |
-          **/INSS.EIIR*.csproj
-          !**/INSS.EIIR*Tests.csproj
+          '**/INSS.EIIR*.csproj'
+          '!**/INSS.EIIR*Tests.csproj'
   
       - task: DotNetCoreCLI@2
         displayName: 'Build Solution'
@@ -40,8 +40,8 @@ stages:
           command: 'build'
           # projects: '**/INSS.EIIR*.csproj'
           projects: |
-          **/INSS.EIIR*.csproj
-          !**/INSS.EIIR*Tests.csproj
+          '**/INSS.EIIR*.csproj'
+          '!**/INSS.EIIR*Tests.csproj'
           arguments: '--configuration $(buildConfiguration)'        
 
       # - task: DotNetCoreCLI@2
@@ -58,8 +58,8 @@ stages:
           publishWebProjects: false
           # projects: '**/*.csproj'
           projects: |
-          **/*.csproj
-          !**/*Test.csproj
+          '**/*.csproj'
+          '!**/*Test.csproj'
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishPipelineArtifact@1
