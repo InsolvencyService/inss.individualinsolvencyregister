@@ -30,13 +30,18 @@ stages:
         displayName: NuGet Restore
         inputs:
           command: 'restore'
-          projects: '**/INSS.EIIR*.csproj'
+          projects: |
+          **/INSS.EIIR*.csproj
+          !**/INSS.EIIR*Tests.csproj
   
       - task: DotNetCoreCLI@2
         displayName: 'Build Solution'
         inputs:
           command: 'build'
-          projects: '**/INSS.EIIR*.csproj'
+          # projects: '**/INSS.EIIR*.csproj'
+          projects: |
+          **/INSS.EIIR*.csproj
+          !**/INSS.EIIR*Tests.csproj
           arguments: '--configuration $(buildConfiguration)'        
 
       # - task: DotNetCoreCLI@2
@@ -51,7 +56,10 @@ stages:
         inputs:
           command: 'publish'
           publishWebProjects: false
-          projects: '**/*.csproj'
+          # projects: '**/*.csproj'
+          projects: |
+          **/*.csproj
+          !**/*Test.csproj
           arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishPipelineArtifact@1
