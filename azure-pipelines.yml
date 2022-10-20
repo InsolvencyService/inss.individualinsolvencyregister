@@ -128,7 +128,7 @@ stages:
                       # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
             targetFiles: |
               *QA*/appsettings-temp*.json
-              *QA*/appsettings-temp*.json ==>*QA*/appsettings.json
+              *QA*/appsettings-temp*.json ==>**/*QA*/appsettings.json
             encoding: 'auto'
             verbosity: 'detailed'
             actionOnMissing: 'log warning'
@@ -138,4 +138,4 @@ stages:
             useLegacyPattern: false
             enableTelemetry: false
       - script: |
-           cat *QA*/appsettings.json
+           cat *QA*/appsettings*.json
