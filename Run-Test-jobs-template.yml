@@ -40,51 +40,51 @@ jobs:
           steps:
             - ${{ if eq(parameters.RunIntTest, true) }}:
 
-              - task: replacetokens@5
-                displayName: Replace tokens in yml files
-                inputs:
-                  targetFiles: '*QA*/appsettings*.json'
-                  encoding: 'auto'
-                  tokenPattern: 'default'
-                  writeBOM: true
-                  actionOnMissing: 'warn'
-                  keepToken: false
-                  actionOnNoFiles: 'continue'
-                  tokenPrefix: '__'
-                  tokenSuffix: '__'
-                  enableTransforms: false
-                  enableRecursion: false
-                  useLegacyPattern: false
-                  enableTelemetry: true
+              # - task: replacetokens@5
+              #   displayName: Replace tokens in yml files
+              #   inputs:
+              #     targetFiles: '*QA*/appsettings*.json'
+              #     encoding: 'auto'
+              #     tokenPattern: 'default'
+              #     writeBOM: true
+              #     actionOnMissing: 'warn'
+              #     keepToken: false
+              #     actionOnNoFiles: 'continue'
+              #     tokenPrefix: '__'
+              #     tokenSuffix: '__'
+              #     enableTransforms: false
+              #     enableRecursion: false
+              #     useLegacyPattern: false
+              #     enableTelemetry: true
 
-              - task: replacetokens@5
-                displayName: Replace tokens in yml files
-                inputs:
-                  targetFiles: '*QA*\appsettings*.json'
-                  encoding: 'auto'
-                  tokenPattern: 'default'
-                  writeBOM: true
-                  actionOnMissing: 'warn'
-                  keepToken: false
-                  actionOnNoFiles: 'continue'
-                  tokenPrefix: '__'
-                  tokenSuffix: '__'
-                  enableTransforms: false
-                  enableRecursion: false
-                  useLegacyPattern: false
-                  enableTelemetry: true
+              # - task: replacetokens@5
+              #   displayName: Replace tokens in yml files
+              #   inputs:
+              #     targetFiles: '*QA*\appsettings*.json'
+              #     encoding: 'auto'
+              #     tokenPattern: 'default'
+              #     writeBOM: true
+              #     actionOnMissing: 'warn'
+              #     keepToken: false
+              #     actionOnNoFiles: 'continue'
+              #     tokenPrefix: '__'
+              #     tokenSuffix: '__'
+              #     enableTransforms: false
+              #     enableRecursion: false
+              #     useLegacyPattern: false
+              #     enableTelemetry: true
 
-              - script: |
-                  pwd
-                  ls *
-                  ls -lrt
+              # - script: |
+              #     pwd
+              #     ls *
+              #     ls -lrt
 
               - task: qetza.replacetokens.replacetokens-task.replacetokens@3
                 displayName: Replace Tokens
                 inputs:
-                  # rootDirectory: $(System.DefaultWorkingDirectory)
+                  rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
                   targetFiles: |
-                    **/appsettings-temp*.json
+                    appsettings-template.json
                   encoding: 'utf-8'
                   verbosity: 'detailed'
                   actionOnMissing: 'log warning'
