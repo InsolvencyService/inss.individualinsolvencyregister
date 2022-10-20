@@ -43,7 +43,7 @@ jobs:
               - task: replacetokens@5
                 displayName: Replace tokens in yml files
                 inputs:
-                  targetFiles: '*QA*\appsetting*.json'
+                  targetFiles: '**\INSS.EIIR.QA.Automation\appsettings*.json'
                   encoding: 'auto'
                   tokenPattern: 'default'
                   writeBOM: true
@@ -58,7 +58,7 @@ jobs:
                   enableTelemetry: true
 
               - script: |
-                  cat *QA*\appsetting*.json'
+                  ls
 
               # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
               #   displayName: Replace Tokens
