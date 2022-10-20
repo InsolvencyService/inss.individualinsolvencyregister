@@ -120,7 +120,6 @@ stages:
     - group: EIIR-int-test-Sit
   jobs:
     - deployment:
-        displayName: Run Int Tests
         environment: ${{ parameters.environment }}
         strategy:
           runOnce:
