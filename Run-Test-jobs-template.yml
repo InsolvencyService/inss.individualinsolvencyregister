@@ -23,12 +23,6 @@ parameters:
   - name: Searchindexer
     type: string
     default: 'INSS.EIIR.Functions.zip'
-  - name: iirwebdbContextConnectionString
-    type: string
-  - name: EIIRIndexUrl
-    type: string
-  - name: EIIRApiKey
-    type: string
   - name: appZipFile
     type: string
     default: 'INSS.EIIR.WEB.zip'
