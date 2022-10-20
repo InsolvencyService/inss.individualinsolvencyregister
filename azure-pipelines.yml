@@ -138,10 +138,4 @@ stages:
                 #       useLegacyPattern: false
                 #       enableTelemetry: false
       - script: |
-        cat *QA*/appsettings.json
-
-
-
-
-
-
+           cat *QA*/appsettings.json
