@@ -55,21 +55,21 @@ stages:
           ls -a **/appsettings-temp*.json
           ls $(System.DefaultWorkingDirectory)
 
-      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-        displayName: Replace Tokens
-        inputs:
-          # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
-          targetFiles: |
-            *QA*/appsettings-temp*.json
-            *QA*/appsettings-temp*.json ==>*QA*/appsettings.json
-          encoding: 'auto'
-          verbosity: 'detailed'
-          actionOnMissing: 'log warning'
-          keepToken: false
-          tokenPrefix: '__'
-          tokenSuffix: '__'
-          useLegacyPattern: false
-          enableTelemetry: false
+      # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      #   displayName: Replace Tokens
+      #   inputs:
+      #     # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
+      #     targetFiles: |
+      #       *QA*/appsettings-temp*.json
+      #       *QA*/appsettings-temp*.json ==>*QA*/appsettings.json
+      #     encoding: 'auto'
+      #     verbosity: 'detailed'
+      #     actionOnMissing: 'log warning'
+      #     keepToken: false
+      #     tokenPrefix: '__'
+      #     tokenSuffix: '__'
+      #     useLegacyPattern: false
+      #     enableTelemetry: false
 
       # - task: DotNetCoreCLI@2
       #   displayName: 'Build Solution'
@@ -119,11 +119,31 @@ stages:
   variables:
     - group: EIIR-int-test-Sit
   jobs:
-    - template: Run-Test-jobs-template.yml
-      parameters:
-        environment: 'Sit'
-        RunIntTest: ${{ parameters.RunIntTest }}
-
+    - deployment:
+        displayName: Run Int Tests
+        environment: ${{ parameters.environment }}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - ${{ if eq(parameters.RunIntTest, true) }}:
+                  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                    displayName: Replace Tokens
+                    inputs:
+                      # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
+                      targetFiles: |
+                        *QA*/appsettings-temp*.json
+                        *QA*/appsettings-temp*.json ==>*QA*/appsettings.json
+                      encoding: 'auto'
+                      verbosity: 'detailed'
+                      actionOnMissing: 'log warning'
+                      keepToken: false
+                      tokenPrefix: '__'
+                      tokenSuffix: '__'
+                      useLegacyPattern: false
+                      enableTelemetry: false
+                  - script: |
+                      cat *QA*/appsettings.json
 
 
 
