@@ -1,0 +1,96 @@
+parameters:
+  - name: environment
+    type: string
+    default: Dev
+  - name: location
+    type: string
+    default: 'uksouth'
+  - name: azureSubscription
+    type: string
+    default: 'AppServicesDevOps-NonProd'
+  - name: method
+    type: string
+    default: 'GET'
+  - name: retries
+    type: number
+    default: 5
+  - name: secondsDelay
+    type: number
+    default: 10
+  - name: timeoutSec
+    type: number
+    default: 120
+  - name: Searchindexer
+    type: string
+    default: 'INSS.EIIR.Functions.zip'
+  - name: iirwebdbContextConnectionString
+    type: string
+  - name: EIIRIndexUrl
+    type: string
+  - name: EIIRApiKey
+    type: string
+  - name: appZipFile
+    type: string
+    default: 'INSS.EIIR.WEB.zip'
+  - name: deployWebapp
+    type: string
+  - name: deployfuncapp
+    type: string
+
+jobs:
+  - deployment:
+    displayName: Run Int Tests
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - ${{ if eq(parameters.runtest, true) }}:
+
+              - task: replacetokens@5
+                displayName: Replace tokens in yml files
+                inputs:
+                  targetFiles: '*QA*\appsetting*.json'
+                  encoding: 'auto'
+                  tokenPattern: 'default'
+                  writeBOM: true
+                  actionOnMissing: 'warn'
+                  keepToken: false
+                  actionOnNoFiles: 'continue'
+                  tokenPrefix: '__'
+                  tokenSuffix: '__'
+                  enableTransforms: false
+                  enableRecursion: false
+                  useLegacyPattern: false
+                  enableTelemetry: true
+
+              - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                displayName: Replace Tokens
+                inputs:
+                  rootDirectory: '$(sourcedir)'
+                  targetFiles: |
+                    appsetting*.json
+                  encoding: 'utf-8'
+                  writeBOM: false
+                  verbosity: 'detailed'
+                  actionOnMissing: 'log warning'
+                  keepToken: false
+                  tokenPrefix: '__'
+                  tokenSuffix: '__'
+                  useLegacyPattern: false
+                  enableTelemetry: false
+
+              - task: VSTest@2
+                displayName: Execute Tests
+                inputs:
+                  testSelector: 'testAssemblies'
+                  testAssemblyVer2: |
+                    **\*test*.dll
+                    !**\*TestAdapter.dll
+                    !**\obj\**
+                  searchFolder: '$(System.DefaultWorkingDirectory)'
+                  codeCoverageEnabled: true
+                  platform: '$(buildPlatform)'
+                  configuration: '$(buildConfiguration)'
+
+             

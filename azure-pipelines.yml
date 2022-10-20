@@ -15,6 +15,9 @@ parameters:
 - name: deployfuncapp    
   type: boolean    
   default: false
+- name: RunIntTest    
+  type: boolean    
+  default: true
 
 resources:
   repositories:
@@ -100,18 +103,31 @@ stages:
         deployWebapp: true
         deployfuncapp: true
 
-- stage: RunIntTest-Sit
-  displayName: 'Run Integration test in Sit'
+- stage: DeploySit
+  displayName: 'Deploy to Sit'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  variables:
+    - group: EIIR-int-test-Sit
+  jobs:
+    - template: Run-Test-jobs-template.yml
+      parameters:
+        environment: 'Sit'
+        RunIntTest: ${{ parameters.RunIntTest }}
+
+- stage: DeploySit
+  displayName: 'Deploy to Sit'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   variables:
     - group: EIIR-Sit
   jobs:
-      - task: DotNetCoreCLI@2
-        displayName: 'Run Tests'
-        inputs:
-          command: test
-          projects: '**/INSS.EIIR.QA*.csproj'
-          arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    - template: deploy-jobs-template.yml
+      parameters:
+        environment: 'Sit'
+        iirwebdbContextConnectionString: $(iirwebdbContextConnectionString)
+        EIIRIndexUrl: $(EIIRIndexUrl)
+        EIIRApiKey: $(EIIRApiKey)
+        deployWebapp: ${{ parameters.deployWebapp }}
+        deployfuncapp: ${{ parameters.deployfuncapp }}
 
 - stage: DeployPreProd
   displayName: 'Deploy to PreProd'
