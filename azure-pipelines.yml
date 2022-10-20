@@ -38,30 +38,30 @@ stages:
         inputs:
           version: '6.0.x'
 
-      - task: DotNetCoreCLI@2
-        displayName: NuGet Restore
-        inputs:
-          command: 'restore'
-          projects: |
-            **/INSS.EIIR*.csproj
-            !**/INSS.EIIR*Tests.csproj
+      # - task: DotNetCoreCLI@2
+      #   displayName: NuGet Restore
+      #   inputs:
+      #     command: 'restore'
+      #     projects: |
+      #       **/INSS.EIIR*.csproj
+      #       !**/INSS.EIIR*Tests.csproj
   
-      - task: Npm@1
-        inputs:
-          command: 'ci' 
-          workingDir: $(System.DefaultWorkingDirectory)/INSS.EIIR.WEB
+      # - task: Npm@1
+      #   inputs:
+      #     command: 'ci' 
+      #     workingDir: $(System.DefaultWorkingDirectory)/INSS.EIIR.WEB
 
-      - task: DotNetCoreCLI@2
-        displayName: 'Build Solution'
-        inputs:
-          command: 'build'
-          # projects: '**/INSS.EIIR*.csproj'
-          projects: |
-            **/INSS.EIIR*.csproj
-            !**/INSS.EIIR*Tests.csproj
-          arguments: '--configuration $(buildConfiguration)'
-        env:
-          MSBUILDSINGLELOADCONTEXT: '1'       
+      # - task: DotNetCoreCLI@2
+      #   displayName: 'Build Solution'
+      #   inputs:
+      #     command: 'build'
+      #     # projects: '**/INSS.EIIR*.csproj'
+      #     projects: |
+      #       **/INSS.EIIR*.csproj
+      #       !**/INSS.EIIR*Tests.csproj
+      #     arguments: '--configuration $(buildConfiguration)'
+      #   env:
+      #     MSBUILDSINGLELOADCONTEXT: '1'       
 
       # - task: DotNetCoreCLI@2
       #   displayName: 'Run Tests'
@@ -70,24 +70,24 @@ stages:
       #     projects: '**/*Tests/*.csproj'
       #     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
-      - task: DotNetCoreCLI@2
-        displayName: 'Publish Project'
-        inputs:
-          command: 'publish'
-          publishWebProjects: false
-          # projects: '**/*.csproj'
-          projects: |
-            **/INSS.EIIR*.csproj
-            !**/INSS.EIIR*Tests.csproj
-          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-        env:
-          MSBUILDSINGLELOADCONTEXT: '1' 
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Artifact'
-        inputs:
-          targetPath: '$(Build.ArtifactStagingDirectory)' 
-          artifactName: 'INSS.EIIR'
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+      # - task: DotNetCoreCLI@2
+      #   displayName: 'Publish Project'
+      #   inputs:
+      #     command: 'publish'
+      #     publishWebProjects: false
+      #     # projects: '**/*.csproj'
+      #     projects: |
+      #       **/INSS.EIIR*.csproj
+      #       !**/INSS.EIIR*Tests.csproj
+      #     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+      #   env:
+      #     MSBUILDSINGLELOADCONTEXT: '1' 
+      # - task: PublishPipelineArtifact@1
+      #   displayName: 'Publish Artifact'
+      #   inputs:
+      #     targetPath: '$(Build.ArtifactStagingDirectory)' 
+      #     artifactName: 'INSS.EIIR'
+      #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - stage: DeployDev
   displayName: 'Deploy to Dev'
