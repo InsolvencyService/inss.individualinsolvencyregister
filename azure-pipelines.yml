@@ -89,29 +89,9 @@ stages:
       #     artifactName: 'INSS.EIIR'
       #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-- stage: DeployDev
-  displayName: 'Deploy to Dev'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  variables:
-    - group: EIIR-Dev
-  jobs:
-    - template: deploy-jobs-template.yml
-      parameters:
-        environment: 'Dev'
-        deployWebapp: true
-        deployfuncapp: true
 
-- stage: DeploySit
-  displayName: 'Deploy to Sit'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  variables:
-    - group: EIIR-Sit
-  jobs:
-    - template: deploy-jobs-template.yml
-      parameters:
-        environment: 'Sit'
-        deployWebapp: ${{ parameters.deployWebapp }}
-        deployfuncapp: ${{ parameters.deployfuncapp }}
+
+
 
 - stage: RunIntTest
   displayName: 'Execute Int Tests'
@@ -124,17 +104,7 @@ stages:
         environment: 'Sit'
         RunIntTest: ${{ parameters.RunIntTest }}
 
-- stage: DeployPreProd
-  displayName: 'Deploy to PreProd'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  variables:
-    - group: EIIR-PreProd
-  jobs:
-    - template: deploy-jobs-template.yml
-      parameters:
-        environment: 'PreProd'
-        deployWebapp: ${{ parameters.deployWebapp }}
-        deployfuncapp: ${{ parameters.deployfuncapp }}
+
 
 
 
