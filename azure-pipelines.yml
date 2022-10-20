@@ -120,7 +120,6 @@ stages:
     - group: EIIR-int-test-Sit
   jobs:
     - deployment:
-            deploy:
               steps:
                 - ${{ if eq(parameters.RunIntTest, true) }}:
                   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
