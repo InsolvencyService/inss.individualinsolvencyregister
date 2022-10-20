@@ -51,6 +51,10 @@ stages:
           command: 'ci' 
           workingDir: $(System.DefaultWorkingDirectory)/INSS.EIIR.WEB
 
+      - script: |
+          ls -a **/appsettings-temp*.json
+          ls $(System.DefaultWorkingDirectory)
+
       # - task: DotNetCoreCLI@2
       #   displayName: 'Build Solution'
       #   inputs:
