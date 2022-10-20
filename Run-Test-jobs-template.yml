@@ -57,30 +57,31 @@ jobs:
                   useLegacyPattern: false
                   enableTelemetry: true
 
-              - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-                displayName: Replace Tokens
-                inputs:
-                  rootDirectory: '$(sourcedir)'
-                  targetFiles: |
-                    appsetting*.json
-                  encoding: 'utf-8'
-                  writeBOM: false
-                  verbosity: 'detailed'
-                  actionOnMissing: 'log warning'
-                  keepToken: false
-                  tokenPrefix: '__'
-                  tokenSuffix: '__'
-                  useLegacyPattern: false
-                  enableTelemetry: false
+              - script: |
+                  cat *QA*\appsetting*.json'
+
+              # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+              #   displayName: Replace Tokens
+              #   inputs:
+              #     rootDirectory: '$(sourcedir)'
+              #     targetFiles: |
+              #       appsetting*.json
+              #     encoding: 'utf-8'
+              #     writeBOM: false
+              #     verbosity: 'detailed'
+              #     actionOnMissing: 'log warning'
+              #     keepToken: false
+              #     tokenPrefix: '__'
+              #     tokenSuffix: '__'
+              #     useLegacyPattern: false
+              #     enableTelemetry: false
 
               - task: VSTest@2
                 displayName: Execute Tests
                 inputs:
                   testSelector: 'testAssemblies'
                   testAssemblyVer2: |
-                    **\*test*.dll
-                    !**\*TestAdapter.dll
-                    !**\obj\**
+                    **\INSS.EIIR.QA.Automation.dll
                   searchFolder: '$(System.DefaultWorkingDirectory)'
                   codeCoverageEnabled: true
                   platform: '$(buildPlatform)'
