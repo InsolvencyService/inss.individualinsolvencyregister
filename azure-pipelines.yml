@@ -119,25 +119,26 @@ stages:
   variables:
     - group: EIIR-int-test-Sit
   jobs:
-              steps:
-                - ${{ if eq(parameters.RunIntTest, true) }}:
-                  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-                    displayName: Replace Tokens
-                    inputs:
-                      # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
-                      targetFiles: |
-                        *QA*/appsettings-temp*.json
-                        *QA*/appsettings-temp*.json ==>*QA*/appsettings.json
-                      encoding: 'auto'
-                      verbosity: 'detailed'
-                      actionOnMissing: 'log warning'
-                      keepToken: false
-                      tokenPrefix: '__'
-                      tokenSuffix: '__'
-                      useLegacyPattern: false
-                      enableTelemetry: false
-                  - script: |
-                      cat *QA*/appsettings.json
+  - job: A
+    steps:
+                # - ${{ if eq(parameters.RunIntTest, true) }}:
+                #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                #     displayName: Replace Tokens
+                #     inputs:
+                #       # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
+                #       targetFiles: |
+                #         *QA*/appsettings-temp*.json
+                #         *QA*/appsettings-temp*.json ==>*QA*/appsettings.json
+                #       encoding: 'auto'
+                #       verbosity: 'detailed'
+                #       actionOnMissing: 'log warning'
+                #       keepToken: false
+                #       tokenPrefix: '__'
+                #       tokenSuffix: '__'
+                #       useLegacyPattern: false
+                #       enableTelemetry: false
+      - script: |
+        cat *QA*/appsettings.json
 
 
 
