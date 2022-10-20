@@ -43,7 +43,8 @@ jobs:
               - task: replacetokens@5
                 displayName: Replace tokens in yml files
                 inputs:
-                  targetFiles: '**/INSS.EIIR.QA.Automation/appsettings*.json'
+                  targetFiles: |
+                    **\appsettings-temp*.json
                   encoding: 'auto'
                   tokenPattern: 'default'
                   writeBOM: true
@@ -58,14 +59,15 @@ jobs:
                   enableTelemetry: true
 
               - script: |
-                  ls
+                  pwd
+                  ls **/appsettings-temp*.json
 
               - task: qetza.replacetokens.replacetokens-task.replacetokens@3
                 displayName: Replace Tokens
                 inputs:
-                  rootDirectory: $(System.DefaultWorkingDirectory)
+                  # rootDirectory: $(System.DefaultWorkingDirectory)
                   targetFiles: |
-                    *QA*/appsetting*.json
+                    **/appsettings-temp*.json
                   encoding: 'utf-8'
                   verbosity: 'detailed'
                   actionOnMissing: 'log warning'
@@ -76,7 +78,7 @@ jobs:
                   enableTelemetry: false
 
               - script: |
-                  ls -a
+                  ls -a **/appsettings-temp*.json
                   ls $(System.DefaultWorkingDirectory)
 
               - task: VSTest@2
