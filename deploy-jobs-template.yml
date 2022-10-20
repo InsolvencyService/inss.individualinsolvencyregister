@@ -26,9 +26,7 @@ parameters:
   - name: appZipFile
     type: string
     default: 'INSS.EIIR.WEB.zip'
-  - name: deployWebapp
-    type: string
-  - name: deployfuncapp
+  - name: RunIntTest
     type: string
 
 jobs:
