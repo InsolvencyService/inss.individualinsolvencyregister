@@ -40,41 +40,40 @@ jobs:
           steps:
             - ${{ if eq(parameters.RunIntTest, true) }}:
 
-              - task: replacetokens@5
-                displayName: Replace tokens in yml files
-                inputs:
-                  targetFiles: '**\INSS.EIIR.QA.Automation\appsettings*.json'
-                  encoding: 'auto'
-                  tokenPattern: 'default'
-                  writeBOM: true
-                  actionOnMissing: 'warn'
-                  keepToken: false
-                  actionOnNoFiles: 'continue'
-                  tokenPrefix: '__'
-                  tokenSuffix: '__'
-                  enableTransforms: false
-                  enableRecursion: false
-                  useLegacyPattern: false
-                  enableTelemetry: true
-
-              - script: |
-                  ls
-
-              # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-              #   displayName: Replace Tokens
+              # - task: replacetokens@5
+              #   displayName: Replace tokens in yml files
               #   inputs:
-              #     rootDirectory: '$(sourcedir)'
-              #     targetFiles: |
-              #       appsetting*.json
-              #     encoding: 'utf-8'
-              #     writeBOM: false
-              #     verbosity: 'detailed'
-              #     actionOnMissing: 'log warning'
+              #     targetFiles: '**\INSS.EIIR.QA.Automation\appsettings*.json'
+              #     encoding: 'auto'
+              #     tokenPattern: 'default'
+              #     writeBOM: true
+              #     actionOnMissing: 'warn'
               #     keepToken: false
+              #     actionOnNoFiles: 'continue'
               #     tokenPrefix: '__'
               #     tokenSuffix: '__'
+              #     enableTransforms: false
+              #     enableRecursion: false
               #     useLegacyPattern: false
-              #     enableTelemetry: false
+              #     enableTelemetry: true
+
+              # - script: |
+              #     ls
+
+              - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                displayName: Replace Tokens
+                inputs:
+                  rootDirectory: $(System.DefaultWorkingDirectory)
+                  targetFiles: |
+                    *QA*\appsetting*.json
+                  encoding: 'utf-8'
+                  verbosity: 'detailed'
+                  actionOnMissing: 'log warning'
+                  keepToken: false
+                  tokenPrefix: '__'
+                  tokenSuffix: '__'
+                  useLegacyPattern: false
+                  enableTelemetry: false
 
               - task: VSTest@2
                 displayName: Execute Tests
