@@ -43,8 +43,7 @@ jobs:
               - task: replacetokens@5
                 displayName: Replace tokens in yml files
                 inputs:
-                  targetFiles: |
-                    **\*QA*\appsettings-template.json
+                  targetFiles: '**/*QA*/appsettings*.json'
                   encoding: 'auto'
                   tokenPattern: 'default'
                   writeBOM: true
@@ -61,8 +60,7 @@ jobs:
               - task: replacetokens@5
                 displayName: Replace tokens in yml files
                 inputs:
-                  targetFiles: |
-                    **/*QA*/appsettings-template.json
+                  targetFiles: '**\*QA*\appsettings*.json'
                   encoding: 'auto'
                   tokenPattern: 'default'
                   writeBOM: true
