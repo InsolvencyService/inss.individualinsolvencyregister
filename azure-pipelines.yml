@@ -46,10 +46,10 @@ stages:
       #       **/INSS.EIIR*.csproj
       #       !**/INSS.EIIR*Tests.csproj
   
-      # - task: Npm@1
-      #   inputs:
-      #     command: 'ci' 
-      #     workingDir: $(System.DefaultWorkingDirectory)/INSS.EIIR.WEB
+      - task: Npm@1
+        inputs:
+          command: 'ci' 
+          workingDir: $(System.DefaultWorkingDirectory)/INSS.EIIR.WEB
 
       # - task: DotNetCoreCLI@2
       #   displayName: 'Build Solution'

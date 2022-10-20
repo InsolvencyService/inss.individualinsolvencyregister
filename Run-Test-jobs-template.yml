@@ -75,6 +75,10 @@ jobs:
                   useLegacyPattern: false
                   enableTelemetry: false
 
+              - script: |
+                  ls -a
+                  ls $(System.DefaultWorkingDirectory)
+
               - task: VSTest@2
                 displayName: Execute Tests
                 inputs:
