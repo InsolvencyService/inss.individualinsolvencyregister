@@ -17,7 +17,7 @@ parameters:
   default: false
 - name: RunIntTest    
   type: boolean    
-  default: false
+  default: true
 
 
 resources:
