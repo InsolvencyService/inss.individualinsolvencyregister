@@ -32,10 +32,9 @@ parameters:
   - name: appZipFile
     type: string
     default: 'INSS.EIIR.WEB.zip'
-  - name: deployWebapp
+  - name: RunIntTest
     type: string
-  - name: deployfuncapp
-    type: string
+
 
 jobs:
   - deployment:
@@ -45,7 +44,7 @@ jobs:
       runOnce:
         deploy:
           steps:
-            - ${{ if eq(parameters.runtest, true) }}:
+            - ${{ if eq(parameters.RunIntTest, true) }}:
 
               - task: replacetokens@5
                 displayName: Replace tokens in yml files
