@@ -44,7 +44,25 @@ jobs:
                 displayName: Replace tokens in yml files
                 inputs:
                   targetFiles: |
-                    **\appsettings-temp*.json
+                    **\*QA*\appsettings-template.json
+                  encoding: 'auto'
+                  tokenPattern: 'default'
+                  writeBOM: true
+                  actionOnMissing: 'warn'
+                  keepToken: false
+                  actionOnNoFiles: 'continue'
+                  tokenPrefix: '__'
+                  tokenSuffix: '__'
+                  enableTransforms: false
+                  enableRecursion: false
+                  useLegacyPattern: false
+                  enableTelemetry: true
+
+              - task: replacetokens@5
+                displayName: Replace tokens in yml files
+                inputs:
+                  targetFiles: |
+                    **/*QA*/appsettings-template.json
                   encoding: 'auto'
                   tokenPattern: 'default'
                   writeBOM: true
@@ -60,7 +78,8 @@ jobs:
 
               - script: |
                   pwd
-                  ls **/appsettings-temp*.json
+                  ls **\**\*.json
+                  ls **/**/*.json
 
               - task: qetza.replacetokens.replacetokens-task.replacetokens@3
                 displayName: Replace Tokens
