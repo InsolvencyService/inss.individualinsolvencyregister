@@ -120,8 +120,6 @@ stages:
     - group: EIIR-int-test-Sit
   jobs:
     - deployment:
-        strategy:
-          runOnce:
             deploy:
               steps:
                 - ${{ if eq(parameters.RunIntTest, true) }}:
