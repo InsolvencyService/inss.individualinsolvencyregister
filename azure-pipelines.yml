@@ -15,9 +15,6 @@ parameters:
 - name: deployfuncapp    
   type: boolean    
   default: false
-- name: RunIntTest    
-  type: boolean    
-  default: true
 
 resources:
   repositories:
@@ -97,22 +94,8 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'Dev'
-        iirwebdbContextConnectionString: $(iirwebdbContextConnectionString)
-        EIIRIndexUrl: $(EIIRIndexUrl)
-        EIIRApiKey: $(EIIRApiKey)
         deployWebapp: true
         deployfuncapp: true
-
-- stage: DeploySit
-  displayName: 'Deploy to Sit'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-  variables:
-    - group: EIIR-int-test-Sit
-  jobs:
-    - template: Run-Test-jobs-template.yml
-      parameters:
-        environment: 'Sit'
-        RunIntTest: ${{ parameters.RunIntTest }}
 
 - stage: DeploySit
   displayName: 'Deploy to Sit'
@@ -123,11 +106,19 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'Sit'
-        iirwebdbContextConnectionString: $(iirwebdbContextConnectionString)
-        EIIRIndexUrl: $(EIIRIndexUrl)
-        EIIRApiKey: $(EIIRApiKey)
         deployWebapp: ${{ parameters.deployWebapp }}
         deployfuncapp: ${{ parameters.deployfuncapp }}
+
+- stage: RunIntTest
+  displayName: 'Execute Int Tests'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  variables:
+    - group: EIIR-int-test-Sit
+  jobs:
+    - template: Run-Test-jobs-template.yml
+      parameters:
+        environment: 'Sit'
+        RunIntTest: ${{ parameters.RunIntTest }}
 
 - stage: DeployPreProd
   displayName: 'Deploy to PreProd'
@@ -138,12 +129,8 @@ stages:
     - template: deploy-jobs-template.yml
       parameters:
         environment: 'PreProd'
-        iirwebdbContextConnectionString: $(iirwebdbContextConnectionString)
-        EIIRIndexUrl: $(EIIRIndexUrl)
-        EIIRApiKey: $(EIIRApiKey)
         deployWebapp: ${{ parameters.deployWebapp }}
         deployfuncapp: ${{ parameters.deployfuncapp }}
-
 
 
 
