@@ -19,7 +19,6 @@ parameters:
   type: boolean    
   default: true
 
-
 resources:
   repositories:
   - repository: inss-devops-common-lib
@@ -51,11 +50,6 @@ stages:
           command: 'ci' 
           workingDir: $(System.DefaultWorkingDirectory)/INSS.EIIR.WEB
 
-      # - script: |
-      #     ls -a **/appsettings-temp*.json
-      #     ls $(System.DefaultWorkingDirectory)
-
-
       - task: DotNetCoreCLI@2
         displayName: 'Build Solution'
         inputs:
@@ -65,17 +59,6 @@ stages:
             **/INSS.EIIR*.csproj
             !**/INSS.EIIR*Tests.csproj
           arguments: '--configuration $(buildConfiguration)'   
-      # - script: |
-      #     cat *QA*/appsettings*.json
-      #     cat *QA*/appsettings.json
-      #     echo 123
-      #     ls *QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
-      #     echo 1234
-      #     ls *QA*/INSS.EIIR.QA.Automation.dll
-      #     echo 12345
-      #     ls *QA*/
-      #     echo 12346
-      #     ls *QA*\
 
       - task: DotNetCoreCLI@2
         displayName: 'Publish Project'
@@ -95,7 +78,6 @@ stages:
           artifactName: 'INSS.EIIR'
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-
 - stage: RunIntTest
   displayName: 'Execute Int Tests'
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -106,12 +88,10 @@ stages:
     steps:
       - ${{ if eq(parameters.RunIntTest, true) }}:
 
-
         - task: DownloadPipelineArtifact@2
           inputs:
             artifact: 'INSS.EIIR'
             patterns: '**/*QA*.zip'
-            # path: $(Build.SourcesDirectory)/bin
 
         - task: ExtractFiles@1
           inputs:
@@ -120,16 +100,9 @@ stages:
             cleanDestinationFolder: false
             overwriteExistingFiles: true
 
-        # - script: |
-        #     echo 123
-        #     ls $(Pipeline.Workspace)/*
-        #     cat $(Pipeline.Workspace)/appsettings-template.json
-
-
         - task: qetza.replacetokens.replacetokens-task.replacetokens@3
           displayName: Replace Tokens
           inputs:
-            # rootDirectory: $(Pipeline.Workspace)
             targetFiles: |
               $(Pipeline.Workspace)/appsettings-template.json
             encoding: 'auto'
@@ -139,26 +112,6 @@ stages:
             tokenPrefix: '__'
             tokenSuffix: '__'
             useLegacyPattern: false
-            
-        # - script: |
-        #     echo 1233
-        #     ls $(Pipeline.Workspace)/*
-        #     cat $(Pipeline.Workspace)/appsettings-template.json
-
-        #     # echo 2
-        #     # ls $(Build.ArtifactStagingDirectory)/*
-        #     # cat **/*QA*.zip
-        #     # cat *QA*/appsettings.json
-        #     # echo 123
-        #     # ls *QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
-        #     # echo 1234
-        #     # ls *QA*/INSS.EIIR.QA.Automation.dll
-        #     # echo 12345
-        #     # ls *QA*/
-        #     # echo 12346
-        #     ls *QA*
-
-
 
         - task: VSTest@2
           displayName: Execute Tests
@@ -170,3 +123,9 @@ stages:
             codeCoverageEnabled: true
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
+
+        - task: PublishTestResults@2
+          inputs:
+            testRunner: VSTest
+            testResultsFiles: '**/*.trx'
+            failTaskOnFailedTests: true
