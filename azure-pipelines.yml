@@ -118,6 +118,8 @@ stages:
             useLegacyPattern: false
 
         - script: |
+            echo 1233
+            ls $(Pipeline.Workspace)/*
             cat *QA*/appsettings*.json
             cat *QA*/appsettings.json
             echo 123
