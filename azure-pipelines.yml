@@ -129,6 +129,7 @@ stages:
         - task: ExtractFiles@1
           inputs:
             archiveFilePatterns: '$(Pipeline.Workspace)/*QA*.zip'
+            cleanDestinationFolder: false
             overwriteExistingFiles: true
             
         - script: |
