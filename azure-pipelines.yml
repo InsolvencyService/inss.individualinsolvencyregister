@@ -122,9 +122,9 @@ stages:
         - task: qetza.replacetokens.replacetokens-task.replacetokens@3
           displayName: Replace Tokens
           inputs:
-            rootDirectory: $(Pipeline.Workspace)
+            # rootDirectory: $(Pipeline.Workspace)
             targetFiles: |
-              appsettings.json
+              $(Pipeline.Workspace)/appsettings-template.json
             encoding: 'auto'
             verbosity: 'detailed'
             actionOnMissing: 'log warning'
@@ -133,9 +133,10 @@ stages:
             tokenSuffix: '__'
             useLegacyPattern: false
             
-        # - script: |
-        #     # echo 1233
-        #     # ls $(Pipeline.Workspace)/*
+        - script: |
+            echo 1233
+            ls $(Pipeline.Workspace)/*
+            cat $(Pipeline.Workspace)/appsettings-template.json
         #     # echo 2
         #     # ls $(Build.ArtifactStagingDirectory)/*
         #     # cat **/*QA*.zip
