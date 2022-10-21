@@ -132,21 +132,21 @@ stages:
             cleanDestinationFolder: false
             overwriteExistingFiles: true
             
-        - script: |
-            # echo 1233
-            # ls $(Pipeline.Workspace)/*
-            # echo 2
-            # ls $(Build.ArtifactStagingDirectory)/*
-            # cat **/*QA*.zip
-            # cat *QA*/appsettings.json
-            # echo 123
-            # ls *QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
-            # echo 1234
-            # ls *QA*/INSS.EIIR.QA.Automation.dll
-            # echo 12345
-            # ls *QA*/
-            # echo 12346
-            ls *QA*
+        # - script: |
+        #     # echo 1233
+        #     # ls $(Pipeline.Workspace)/*
+        #     # echo 2
+        #     # ls $(Build.ArtifactStagingDirectory)/*
+        #     # cat **/*QA*.zip
+        #     # cat *QA*/appsettings.json
+        #     # echo 123
+        #     # ls *QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
+        #     # echo 1234
+        #     # ls *QA*/INSS.EIIR.QA.Automation.dll
+        #     # echo 12345
+        #     # ls *QA*/
+        #     # echo 12346
+        #     ls *QA*
 
 
 
