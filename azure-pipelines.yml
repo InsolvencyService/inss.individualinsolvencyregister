@@ -122,9 +122,9 @@ stages:
         - task: qetza.replacetokens.replacetokens-task.replacetokens@3
           displayName: Replace Tokens
           inputs:
-                      # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
+            rootDirectory: $(Pipeline.Workspace)
             targetFiles: |
-              appsettings*.json
+              appsettings.json
             encoding: 'auto'
             verbosity: 'detailed'
             actionOnMissing: 'log warning'
