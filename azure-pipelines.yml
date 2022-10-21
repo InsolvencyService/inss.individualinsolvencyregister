@@ -116,8 +116,15 @@ stages:
         - task: ExtractFiles@1
           inputs:
             archiveFilePatterns: '$(Pipeline.Workspace)/*QA*.zip'
+            destinationfolder: $(Pipeline.Workspace)
             cleanDestinationFolder: false
             overwriteExistingFiles: true
+
+        - script: |
+            echo 123
+            ls $(Pipeline.Workspace)/*
+            cat $(Pipeline.Workspace)/appsettings-template.json
+
 
         - task: qetza.replacetokens.replacetokens-task.replacetokens@3
           displayName: Replace Tokens
@@ -137,6 +144,7 @@ stages:
             echo 1233
             ls $(Pipeline.Workspace)/*
             cat $(Pipeline.Workspace)/appsettings-template.json
+
         #     # echo 2
         #     # ls $(Build.ArtifactStagingDirectory)/*
         #     # cat **/*QA*.zip
