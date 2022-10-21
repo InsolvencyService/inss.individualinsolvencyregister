@@ -1,6 +1,3 @@
-trigger:
-- develop
-  
 pool:
   vmImage: windows-latest
 
@@ -34,83 +31,73 @@ stages:
   jobs:  
     - job: 
       steps:
-      # - task: UseDotNet@2
-      #   inputs:
-      #     version: '6.0.x'
+      - task: UseDotNet@2
+        inputs:
+          version: '6.0.x'
 
-      # - task: DotNetCoreCLI@2
-      #   displayName: NuGet Restore
-      #   inputs:
-      #     command: 'restore'
-      #     projects: |
-      #       **/INSS.EIIR*.csproj
-      #       !**/INSS.EIIR*Tests.csproj
+      - task: DotNetCoreCLI@2
+        displayName: NuGet Restore
+        inputs:
+          command: 'restore'
+          projects: |
+            **/INSS.EIIR*.csproj
+            !**/INSS.EIIR*Tests.csproj
   
       - task: Npm@1
         inputs:
           command: 'ci' 
           workingDir: $(System.DefaultWorkingDirectory)/INSS.EIIR.WEB
 
-      - script: |
-          ls -a **/appsettings-temp*.json
-          ls $(System.DefaultWorkingDirectory)
+      # - script: |
+      #     ls -a **/appsettings-temp*.json
+      #     ls $(System.DefaultWorkingDirectory)
 
-      # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      #   displayName: Replace Tokens
-      #   inputs:
-      #     # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
-      #     targetFiles: |
-      #       *QA*/appsettings-temp*.json
-      #       *QA*/appsettings-temp*.json ==>*QA*/appsettings.json
-      #     encoding: 'auto'
-      #     verbosity: 'detailed'
-      #     actionOnMissing: 'log warning'
-      #     keepToken: false
-      #     tokenPrefix: '__'
-      #     tokenSuffix: '__'
-      #     useLegacyPattern: false
-      #     enableTelemetry: false
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: Replace Tokens
+        inputs:
+          # rootDirectory: $(Build.SourcesDirectory)/inss-individualinsolvencyregister/INSS.EIIR.QA.Automation
+          targetFiles: |
+            *QA*/appsettings-temp*.json
+            *QA*/appsettings-temp*.json ==>*QA*/appsettings.json
+          encoding: 'auto'
+          verbosity: 'detailed'
+          actionOnMissing: 'log warning'
+          keepToken: false
+          tokenPrefix: '__'
+          tokenSuffix: '__'
+          useLegacyPattern: false
+          enableTelemetry: false
 
-      # - task: DotNetCoreCLI@2
-      #   displayName: 'Build Solution'
-      #   inputs:
-      #     command: 'build'
-      #     # projects: '**/INSS.EIIR*.csproj'
-      #     projects: |
-      #       **/INSS.EIIR*.csproj
-      #       !**/INSS.EIIR*Tests.csproj
-      #     arguments: '--configuration $(buildConfiguration)'
-      #   env:
-      #     MSBUILDSINGLELOADCONTEXT: '1'       
+      - task: DotNetCoreCLI@2
+        displayName: 'Build Solution'
+        inputs:
+          command: 'build'
+          # projects: '**/INSS.EIIR*.csproj'
+          projects: |
+            **/INSS.EIIR*.csproj
+            !**/INSS.EIIR*Tests.csproj
+          arguments: '--configuration $(buildConfiguration)'
+        env:
+          MSBUILDSINGLELOADCONTEXT: '1'       
 
-      # - task: DotNetCoreCLI@2
-      #   displayName: 'Run Tests'
-      #   inputs:
-      #     command: test
-      #     projects: '**/*Tests/*.csproj'
-      #     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-
-      # - task: DotNetCoreCLI@2
-      #   displayName: 'Publish Project'
-      #   inputs:
-      #     command: 'publish'
-      #     publishWebProjects: false
-      #     # projects: '**/*.csproj'
-      #     projects: |
-      #       **/INSS.EIIR*.csproj
-      #       !**/INSS.EIIR*Tests.csproj
-      #     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-      #   env:
-      #     MSBUILDSINGLELOADCONTEXT: '1' 
-      # - task: PublishPipelineArtifact@1
-      #   displayName: 'Publish Artifact'
-      #   inputs:
-      #     targetPath: '$(Build.ArtifactStagingDirectory)' 
-      #     artifactName: 'INSS.EIIR'
-      #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
-
-
+      - task: DotNetCoreCLI@2
+        displayName: 'Publish Project'
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          # projects: '**/*.csproj'
+          projects: |
+            **/INSS.EIIR*.csproj
+            !**/INSS.EIIR*Tests.csproj
+          arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        env:
+          MSBUILDSINGLELOADCONTEXT: '1' 
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Artifact'
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)' 
+          artifactName: 'INSS.EIIR'
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 
 - stage: RunIntTest
@@ -136,6 +123,14 @@ stages:
             tokenPrefix: '__'
             tokenSuffix: '__'
             useLegacyPattern: false
-            enableTelemetry: false
-      - script: |
-           cat $(System.DefaultWorkingDirectory)/*QA*/appsettings*.json
+
+        - task: VSTest@2
+          displayName: Execute Tests
+          inputs:
+            testSelector: 'testAssemblies'
+            testAssemblyVer2: |
+              **\INSS.EIIR.QA.Automation.dll
+            searchFolder: '$(System.DefaultWorkingDirectory)'
+            codeCoverageEnabled: true
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
