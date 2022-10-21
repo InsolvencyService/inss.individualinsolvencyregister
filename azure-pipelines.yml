@@ -126,9 +126,17 @@ stages:
             patterns: '**/*QA*.zip'
             # path: $(Build.SourcesDirectory)/bin
 
+        - task: ExtractFiles@1
+          inputs:
+            archiveFilePatterns: '**/*QA*.zip'
+            cleanDestinationFolder: true
+            overwriteExistingFiles: false
+            
         - script: |
             echo 1233
             ls $(Pipeline.Workspace)/*
+            echo 1
+            ls $(Build.SourcesDirectory)/*
             cat **/*QA*.zip
             cat *QA*/appsettings.json
             echo 123
