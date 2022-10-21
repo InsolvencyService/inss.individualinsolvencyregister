@@ -107,13 +107,15 @@ stages:
             useLegacyPattern: false
 
         - script: |
-            cat $(System.DefaultWorkingDirectory)/*QA*/appsettings.json
+            cat '$(System.DefaultWorkingDirectory)/*QA*/appsettings.json'
             echo 123
-            ls $(System.DefaultWorkingDirectory)/*QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
+            ls '$(System.DefaultWorkingDirectory)/*QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll'
             echo 1234
-            ls $(System.DefaultWorkingDirectory/*QA*/INSS.EIIR.QA.Automation.dll
+            ls '$(System.DefaultWorkingDirectory/*QA*/INSS.EIIR.QA.Automation.dll'
             echo 12345
-            ls $(System.DefaultWorkingDirectory/*QA*/
+            ls '$(System.DefaultWorkingDirectory/*QA*/'
+            echo 12346
+            ls -lrt '$(System.DefaultWorkingDirectory\*QA*\'
 
 
         - task: VSTest@2
