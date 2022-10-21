@@ -133,22 +133,20 @@ stages:
             overwriteExistingFiles: true
             
         - script: |
-            echo 1233
-            ls $(Pipeline.Workspace)/*
-            echo 1
-            ls $(Build.SourcesDirectory)/*
-            echo 2
-            ls $(Build.ArtifactStagingDirectory)/*
-            cat **/*QA*.zip
-            cat *QA*/appsettings.json
-            echo 123
-            ls *QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
-            echo 1234
-            ls *QA*/INSS.EIIR.QA.Automation.dll
-            echo 12345
-            ls *QA*/
-            echo 12346
-            ls *QA*\
+            # echo 1233
+            # ls $(Pipeline.Workspace)/*
+            # echo 2
+            # ls $(Build.ArtifactStagingDirectory)/*
+            # cat **/*QA*.zip
+            # cat *QA*/appsettings.json
+            # echo 123
+            # ls *QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
+            # echo 1234
+            # ls *QA*/INSS.EIIR.QA.Automation.dll
+            # echo 12345
+            # ls *QA*/
+            # echo 12346
+            ls *QA*
 
 
 
@@ -157,7 +155,7 @@ stages:
           inputs:
             testSelector: 'testAssemblies'
             testAssemblyVer2: |
-              *QA*/INSS.EIIR.QA.Automation.dll
+              INSS.EIIR.QA.Automation.dll
             searchFolder: '$(System.DefaultWorkingDirectory)'
             codeCoverageEnabled: true
             platform: '$(buildPlatform)'
