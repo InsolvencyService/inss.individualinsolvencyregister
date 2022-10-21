@@ -62,6 +62,17 @@ stages:
             **/INSS.EIIR*.csproj
             !**/INSS.EIIR*Tests.csproj
           arguments: '--configuration $(buildConfiguration)'   
+      - script: |
+          cat *QA*/appsettings*.json
+          cat *QA*/appsettings.json
+          echo 123
+          ls *QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
+          echo 1234
+          ls *QA*/INSS.EIIR.QA.Automation.dll
+          echo 12345
+          ls *QA*/
+          echo 12346
+          ls *QA*\
 
       - task: DotNetCoreCLI@2
         displayName: 'Publish Project'
