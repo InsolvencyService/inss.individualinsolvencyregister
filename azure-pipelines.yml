@@ -116,14 +116,14 @@ stages:
         - task: ExtractFiles@1
           inputs:
             archiveFilePatterns: '$(Pipeline.Workspace)/*QA*.zip'
-            destinationfolder: $(Pipeline.Workspace)
+            destinationFolder: $(Pipeline.Workspace)
             cleanDestinationFolder: false
             overwriteExistingFiles: true
 
-        - script: |
-            echo 123
-            ls $(Pipeline.Workspace)/*
-            cat $(Pipeline.Workspace)/appsettings-template.json
+        # - script: |
+        #     echo 123
+        #     ls $(Pipeline.Workspace)/*
+        #     cat $(Pipeline.Workspace)/appsettings-template.json
 
 
         - task: qetza.replacetokens.replacetokens-task.replacetokens@3
@@ -140,10 +140,10 @@ stages:
             tokenSuffix: '__'
             useLegacyPattern: false
             
-        - script: |
-            echo 1233
-            ls $(Pipeline.Workspace)/*
-            cat $(Pipeline.Workspace)/appsettings-template.json
+        # - script: |
+        #     echo 1233
+        #     ls $(Pipeline.Workspace)/*
+        #     cat $(Pipeline.Workspace)/appsettings-template.json
 
         #     # echo 2
         #     # ls $(Build.ArtifactStagingDirectory)/*
@@ -166,7 +166,7 @@ stages:
             testSelector: 'testAssemblies'
             testAssemblyVer2: |
               INSS.EIIR.QA.Automation.dll
-            searchFolder: '$(System.DefaultWorkingDirectory)'
+            searchFolder: '$(Pipeline.Workspace)'
             codeCoverageEnabled: true
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
