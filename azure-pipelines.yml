@@ -1,3 +1,6 @@
+trigger:
+- int-test-pipeline
+
 pool:
   vmImage: windows-latest
 
@@ -117,10 +120,16 @@ stages:
             tokenSuffix: '__'
             useLegacyPattern: false
 
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: 'INSS.EIIR'
+            patterns: '**/*QA*.zip'
+            # path: $(Build.SourcesDirectory)/bin
+
         - script: |
             echo 1233
             ls $(Pipeline.Workspace)/*
-            cat *QA*/appsettings*.json
+            cat **/*QA*.zip
             cat *QA*/appsettings.json
             echo 123
             ls *QA*/bin/Release/net6.0/INSS.EIIR.QA.Automation.dll
