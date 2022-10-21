@@ -123,6 +123,7 @@ stages:
             codeCoverageEnabled: true
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
+          continueOnError: true
 
         - task: PublishTestResults@2
           inputs:
