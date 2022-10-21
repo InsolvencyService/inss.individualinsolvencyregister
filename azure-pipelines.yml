@@ -125,19 +125,6 @@ stages:
             configuration: '$(buildConfiguration)'
           continueOnError: true
 
-        - script: |
-            ls $(System.DefaultWorkingDirectory)
-            echo 1
-            echo $(Agent.TempDirectory)
-            ls $(Agent.TempDirectory)
-            echo $(System.DefaultWorkingDirectory)
-
-        - task: PublishTestResults@2
-          inputs:
-            testRunner: VSTest
-            testResultsFiles: '**/TestResults/*.trx'
-            failTaskOnFailedTests: true
-
         - task: PublishTestResults@2
           displayName: 'Publish Test Results'
           inputs:
