@@ -110,15 +110,17 @@ stages:
             useLegacyPattern: false
 
         - script: |
-            cat *QA*/appsettings-temp*.json
-            ls $(System.DefaultWorkingDirectory)
+            cat *QA*/appsettings.json
+            ls $(System.DefaultWorkingDirectory)/*QA*
+            echo 123
+            ls *QA*\INSS.EIIR.QA.Automation.dll
 
         - task: VSTest@2
           displayName: Execute Tests
           inputs:
             testSelector: 'testAssemblies'
             testAssemblyVer2: |
-              **\INSS.EIIR.QA.Automation.dll
+              *QA*\INSS.EIIR.QA.Automation.dll
             searchFolder: '$(System.DefaultWorkingDirectory)'
             codeCoverageEnabled: true
             platform: '$(buildPlatform)'
