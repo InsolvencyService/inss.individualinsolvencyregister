@@ -21,8 +21,8 @@ namespace INSS.EIIR.Web.Areas.Admin.Controllers
             _subscriberDataProvider = subscriberDataProvider;
         }
 
-        // GET: /<controller>/
-        public IActionResult Index()
+        [HttpGet(AreaNames.Admin + "/Subscribers/{page?}/{active?}")]
+        public async Task<IActionResult> Index(int page = 1, string active = "true")
         {
             return View();
         }

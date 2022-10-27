@@ -16,6 +16,7 @@ using Joonasw.AspNetCore.SecurityHeaders;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,8 +78,7 @@ var options = new RewriteOptions()
 
 app.UseRewriter(options);
 
-app.MapHealthChecks("/health");
-app.MapHealthChecks("/ping");
+app.MapHealthChecks("/health/ping");
 
 app.MapControllerRoute(
     name: "areas",
@@ -129,21 +129,17 @@ void ConfigureServices(IServiceCollection services)
     });
 
     var config = builder.Configuration;
-
+    var connectionString = config.GetConnectionString("iirwebdbContextConnectionString");
+    
     builder.Services.AddOptions<ApiSettings>()
         .Configure<IConfiguration>((settings, configuration) =>
         {
             configuration.GetSection("ApiSettings").Bind(settings);
         });
 
-    var appUrl = config.GetConnectionString("DRO_API_HEALTH_ENDPOINT_HERE");
-    builder.Services.AddHealthChecks().AddUrlGroup(new Uri(appUrl));
+    builder.Services.AddHealthChecks().AddSqlServer(connectionString);
 
-builder.Services.AddTransient(_ =>
-    {
-        var connectionString = config.GetConnectionString("iirwebdbContextConnectionString");
-        return new EIIRContext(connectionString);
-    });
+    builder.Services.AddTransient(_ => new EIIRContext(connectionString));
 
     services.AddTransient<IAuthenticationProvider, AuthenticationProvider>();
     services.AddTransient<IAccountRepository, AccountRepository>();
