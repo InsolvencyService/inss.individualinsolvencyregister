@@ -39,7 +39,7 @@ public class ExtractJobServiceTrigger
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
     public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req)
     {
-         private_run(new ExtractJobMessage() { ExtractFilename="prabhat_tests1",ExtractId=123});
+         private_run(new ExtractJobMessage() { ExtractFilename="Glen_tests1",ExtractId=123});
         string responseMessage = $"This eiir subscriber file creation has been triggered at: {DateTime.Now}";
         return new OkObjectResult(responseMessage);
     }
